@@ -7,30 +7,41 @@
 		<title>Tabelle</title>
 	</head>
 	<body>
-	
-		<form action="MyServlet" method="post">
+		<ol>
+			<li>
+				Text: ${text}
+			</li>
+			<li>
+				Password: ${password}
+			</li>
+			<li>
+				Email: ${email}
+			</li>
+			<li>
+				Zugriff: ${zugriff}
+			</li>
+		</ol>
 		<table>
 			<tr>
 				<th>Name</th>
 				<th>Prozent</th>
 				<th>Fehlerquote</th>
 			</tr><tr>
-				<td>${nameA}</td>
-				<td>${proA}%</td>
-				<td>${feh1}</td>
+				<td>Dennis</td>
+				<td>${proz0}%</td>
+				<td>${fehlerquote0}</td>
 			</tr><tr>
-				<td>${nameB}</td>
-				<td>${proB}%</td>
-				<td>${feh2}</td>
+				<td>Lissi</td>
+				<td>${proz1}%</td>
+				<td>${fehlerquote1}</td>
 			</tr><tr>
-				<td>${nameC}</td>
-				<td>${proC}%</td>
-				<td>${feh3}</td>
+				<td>Tobias</td>
+				<td>${proz2}%</td>
+				<td>${fehlerquote2}</td>
 			</tr>
 		</table>
-		
+		${serverzeit}
 		<a href="http://localhost:8080/Hausaufgabe_1/index.html" type="Hausaufgabe">Zurueck</a>
-		</form>
 	
 	</body>
 </html>

@@ -5,9 +5,11 @@
 	box-sizing: border-box;	
  }
  header {
-	 background-color:aliceblue;
-	 position: sticky;
-	 text-align:center;
+	background-color:aliceblue;
+	position: -webkit-sticky; /* Safari */
+	position: sticky;
+	top: 0;
+	text-align:center;
  }
   
 html,body {
