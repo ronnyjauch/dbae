@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet implementation class MyServlet Kommentar
+ * Servlet implementation class MyServlet
  */
 @WebServlet("/MyServlet")
 public class MyServlet extends HttpServlet {
