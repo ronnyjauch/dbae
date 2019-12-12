@@ -62,6 +62,7 @@ public class ProfilServlet extends HttpServlet {
 		if (!fm.pruefePasswort(pass1, pass2)) {
 			fm.addError("Die Passwörter stimmen nicht überein!");
 		}
+		
 		if (!user.getAgb()) {
 			fm.addError("Sie müssen die AGBs akzeptieren!");
 		}

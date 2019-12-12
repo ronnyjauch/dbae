@@ -1,14 +1,12 @@
 package data;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class Benutzer {
 
 	private String name = "";
 	private String password = "";
-	private String age = "";
+	private Integer age = 0;
 	private String email = "";
 	private String number = "";
 	private Boolean agb = false;
@@ -35,7 +33,7 @@ public class Benutzer {
 		}
 
 		if (parameters.containsKey("age")) {
-			this.age = parameters.get("age")[0];
+			this.age = Integer.parseInt(parameters.get("age")[0]);
 		}
 
 		if (parameters.containsKey("email")) {
@@ -66,11 +64,11 @@ public class Benutzer {
 		this.password = password;
 	}
 
-	public String getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(String age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
