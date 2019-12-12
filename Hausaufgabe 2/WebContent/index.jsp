@@ -14,6 +14,6 @@
 			<input name="password" type="password" placeholder="Ihr Passwort"><br>
 			<button type="submit">Absenden!</button>
 		</form>
-		<label>${message}</label>
+		<p>${message}</p>
 	</body>
 </html>

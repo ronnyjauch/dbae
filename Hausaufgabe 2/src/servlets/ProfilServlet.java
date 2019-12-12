@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import data.Benutzer;
+import manager.FehlerManager;
 
 /**
  * Servlet implementation class ProfilServlet
@@ -37,63 +38,52 @@ public class ProfilServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		FehlerManager fm = new FehlerManager();
 		HttpSession session = request.getSession();
-		String age = (String) request.getParameter("age");
-		String email = (String) request.getParameter("email");
-		String number = (String) request.getParameter("number");
-		String pass1 = (String) request.getParameter("password1");
-		String pass2 = (String) request.getParameter("password2");
-		String agb = (String) request.getParameter("agb");
-		String privacypolicies = (String) request.getParameter("privacypolicies");
-		if (!(age.matches("[0-9]|[0-9][0-9]|1[0-2][0-3]"))) {
-			session.setAttribute("message", "Das Alter muss zwischen inklusive 0 und 123 liegen!");
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
-			return;
-		}
-		session.setAttribute("age", age);
-		if (!(email.matches("[a-zA-Z._+-]{5,20}@[1-9a-zA-Z]*.[a-z]{2,3}"))) {
-			session.setAttribute("message", "Die E-Mail-Adresse muss aus 5-20 Groß- oder Kleinbichstaben (ebenfalls erlaubt sind + - . _) gefolgt von @, beliebig vielen Groß- oder Kleinbuchstaben oder Zahlen, einem Punkt und 2-3 Kleinbuchstaben bestehen!");
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
-			return;
-		}
-		session.setAttribute("email", email);
-		if (!(number.matches("([+][0-9]{2}|0)[0-9]{5}[\\/-]?[0-9]{10}"))) {
-			session.setAttribute("message", "Die Telefonnummer muss entweder mit + und zwei Zahlen oder mit 0 beginnen, insgesamt 15 Zahlen lang sein und nach den ersten 5 Zahlen (ohne Vorwahl) ist ein / oder - möglich!");
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
-			return;
-		}
-		session.setAttribute("number", number);
-		if (!(pass1.equals(pass2))) {
-			session.setAttribute("message", "Die Passwörter stimmen nicht überein! " + pass1 + " " + pass2);
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
-			return;
-		}
-		session.setAttribute("password1", pass1);
-		session.setAttribute("password2", pass1);
-		if (agb.equals("false")) {
-			session.setAttribute("message", "Sie müssen die AGBs akzeptieren!");
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
-			return;
-		}
-		session.setAttribute("agb", agb);
-		if (privacypolicies.equals("false")) {
-			session.setAttribute("message", "Sie müssen die Datenschutzbestimmungen akzeptieren!");
-			request.getRequestDispatcher("profil.jsp").forward(request, response);
-			return;
-		}
-		session.setAttribute("privacypolicies", privacypolicies);
-		session.setAttribute("message", "Erfolgreich!");
 		Benutzer user = (Benutzer) session.getAttribute("user");
-		user.setAge(age);
-		user.setEmail(email);
-		user.setNumber(number);
-		user.setPassword(pass1);
-		user.setAgb(agb);
-		user.setPrivacypolicies(privacypolicies);
-		session.setAttribute("user", user);
-		request.getRequestDispatcher("index.jsp").forward(request, response);
-		doGet(request, response);
+		if(user == null) {
+			user = new Benutzer();
+		}
+
+		user.parse(request.getParameterMap());
+		
+		String pass1 = request.getParameter("password1");
+		String pass2 = request.getParameter("password2");
+		
+		if (!fm.pruefeAlter(user.getAge())) {
+			fm.addError("Das Alter muss zwischen inklusive 0 und 123 liegen!");
+		}
+		if (!fm.pruefeEmail(user.getEmail())) {
+			fm.addError("Die E-Mail-Adresse muss aus 5-20 Groß- oder Kleinbichstaben (ebenfalls erlaubt sind + - . _) gefolgt von @, beliebig vielen Groß- oder Kleinbuchstaben oder Zahlen, einem Punkt und 2-3 Kleinbuchstaben bestehen!");
+		}
+		if (!fm.pruefeTelNr(user.getNumber())) {
+			fm.addError( "Die Telefonnummer muss entweder mit + und zwei Zahlen oder mit 0 beginnen, gefolgt von 4 Ziffern für die Vorwahl und maximal 10 Ziffern nach einem optionalen Bindestrich bzw Schrägstrich!");
+		}
+		if (!fm.pruefePasswort(pass1, pass2)) {
+			fm.addError("Die Passwörter stimmen nicht überein!");
+		}
+		if (!user.getAgb()) {
+			fm.addError("Sie müssen die AGBs akzeptieren!");
+		}
+		if (!user.getPrivacypolicies()) {
+			fm.addError("Sie müssen die Datenschutzbestimmungen akzeptieren!");
+		}
+		
+		if(fm.hasError()) {
+			request.setAttribute("message", fm.getErrorHTML());
+			request.setAttribute("password1", pass1);
+			request.setAttribute("password2", pass2);
+			request.setAttribute("errorUserData", user);
+			request.getRequestDispatcher("profil.jsp").forward(request, response);
+		} else {
+			request.setAttribute("message", "Erfolgreich!");
+			session.setAttribute("user", user);
+			session.setAttribute("errorUserData", null);
+			user.setPassword(pass1);
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
+		
 	}
+
 
 }

@@ -1,28 +1,53 @@
 package data;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class Benutzer {
-	
-	String name;
-	String password;
-	String age;
-	String email;
-	String number;
-	String agb;
-	String privacypolicies;
-	
+
+	private String name = "";
+	private String password = "";
+	private String age = "";
+	private String email = "";
+	private String number = "";
+	private Boolean agb = false;
+	private Boolean privacypolicies = false;
+
 	public Benutzer() {
 		name = "foo";
 		password = "bar";
 	}
-	
+
 	public Benutzer(String name) {
 		this.name = name;
 		password = "root";
 	}
-	
+
 	public Benutzer(String name, String password) {
 		this.name = name;
 		this.password = password;
+	}
+
+	public void parse(Map<String, String[]> parameters) {
+		if (parameters.containsKey("name")) {
+			this.name = parameters.get("name")[0];
+		}
+
+		if (parameters.containsKey("age")) {
+			this.age = parameters.get("age")[0];
+		}
+
+		if (parameters.containsKey("email")) {
+			this.email = parameters.get("email")[0];
+		}
+
+		if (parameters.containsKey("number")) {
+			this.number = parameters.get("number")[0];
+		}
+
+		this.agb = parameters.containsKey("agb");
+		this.privacypolicies = parameters.containsKey("privacypolicies");
 	}
 
 	public String getName() {
@@ -65,19 +90,19 @@ public class Benutzer {
 		this.number = number;
 	}
 
-	public String getAgb() {
+	public Boolean getAgb() {
 		return agb;
 	}
 
-	public void setAgb(String agb) {
+	public void setAgb(Boolean agb) {
 		this.agb = agb;
 	}
 
-	public String getPrivacypolicies() {
+	public Boolean getPrivacypolicies() {
 		return privacypolicies;
 	}
 
-	public void setPrivacypolicies(String privacypolicies) {
+	public void setPrivacypolicies(Boolean privacypolicies) {
 		this.privacypolicies = privacypolicies;
 	}
 }

@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
 			session.setAttribute("message", "");
 			request.getRequestDispatcher("profil.jsp").forward(request, response);
 		} else {
-			session.setAttribute("message", "Der Benutzername ist nicht restlos durch 5 teilbar");
+			request.setAttribute("message", "Der Benutzername ist nicht restlos durch 5 teilbar");
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
 		
