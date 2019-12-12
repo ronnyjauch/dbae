@@ -6,7 +6,7 @@ public class Benutzer {
 
 	private String name = "";
 	private String password = "";
-	private Integer age = 0;
+	private String age = "";
 	private String email = "";
 	private String number = "";
 	private Boolean agb = false;
@@ -33,7 +33,7 @@ public class Benutzer {
 		}
 
 		if (parameters.containsKey("age")) {
-			this.age = Integer.parseInt(parameters.get("age")[0]);
+			this.age = parameters.get("age")[0];
 		}
 
 		if (parameters.containsKey("email")) {
@@ -64,11 +64,11 @@ public class Benutzer {
 		this.password = password;
 	}
 
-	public Integer getAge() {
+	public String getAge() {
 		return age;
 	}
 
-	public void setAge(Integer age) {
+	public void setAge(String age) {
 		this.age = age;
 	}
 
